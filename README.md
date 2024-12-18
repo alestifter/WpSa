@@ -3,7 +3,7 @@
 ## Teammitglieder
 - Clemens Burger Projektleiter
 - Gradischnig Paul Crontroller
-- Phillip Laimer Programmierer
-- Alesandro A Ka
+- Phillip Leimer Riskmanager / Dokumentationsbeauftragter
+- Alessandro Stifter
 
 
